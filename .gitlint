@@ -1,0 +1,13 @@
+[general]
+ignore=B6,T5
+regex-style-search=true
+
+[title-match-regex]
+# match a conventional commit title
+regex=^(\[skip ci\]|build|ci|docs|feat|fix|perf|refactor|style|test|chore)(\(.+\))?: .{1,50}
+
+[title-max-length]
+line-length=255
+
+[author-valid-email]
+regex=[^@]+@google.com
