@@ -6,8 +6,6 @@ INSTALL_DEV_REQS ?= true
 PYTHON_VERSION := $(shell python --version | cut -d " " -f 2 | cut -d "." -f 1-2)
 GITHUB_REPOSITORY ?= marouenes/creator-io
 REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
-# Black magic to get module directories
-PYTHON_MODULES := $(foreach initpy, $(foreach dir, $(wildcard ies_csc_dm/*), $(wildcard $(dir)/__init__.py)), $(realpath $(dir $(initpy))))
 
 .PHONY: help
 help:
