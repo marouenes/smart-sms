@@ -1,0 +1,89 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+template: |
+  ## Changes
+  $CHANGES
+
+  ## Previous Version
+  $PREVIOUS_TAG
+categories:
+  - title: "‼️ Breaking Changes"
+    labels:
+      - "major"
+  - title: "🚀 Commercial Releases"
+    labels:
+      - "minor"
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "patch"
+  - title: "🧰 Maintenance"
+    labels:
+      - "chore"
+      - "operations"
+      - "infrastructure"
+  - title: "📚 Documentation"
+    labels:
+      - "documentation"
+  - title: "📦 Dependencies"
+    labels:
+      - "dependencies"
+change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+change-title-escapes: '\<*_&'
+commitish: "main"
+version-resolver:
+  major:
+    labels:
+      - "major"
+  minor:
+    labels:
+      - "minor"
+  patch:
+    labels:
+      - "patch"
+      - "bug"
+  default: patch
+autolabeler:
+  - label: "major"
+    title:
+      - "/^breaking:/i"
+      - "/^major:/i"
+  - label: "minor"
+    title:
+      - "/^minor:/i"
+  - label: "patch"
+    title:
+      - "/^fix/i"
+      - "/^bug/i"
+  - label: "chore"
+    title:
+      - "/^chore/i"
+      - "/^refactor/i"
+      - "/^test/i"
+      - "/^perf/i"
+  # CI/CD and infrastructure changes
+  - label: "infrastructure"
+    files:
+      - ".github/*"
+      - ".pre-commit-config.yaml"
+      - ".devcontainer/*"
+      - "Dockerfile"
+      - "*.ini"
+      - "*.cfg"
+      - "*.toml"
+      - "Makefile"
+  # both manual changes to the lock files and automated changes from dependabot
+  - label: "dependencies"
+    title:
+      - "/^dependabot/i"
+      - "/^bump/i"
+  - label: "documentation"
+    files:
+      - "docs/*"
+      - "README*"
+      - "CHANGELOG*"
+      - "LICENSE*"
+      - "NOTICE*"
+      - "CONTRIBUTING*"
+      - "CODE_OF_CONDUCT*"
+      - "SECURITY*"
+prerelease-identifier: "rc" # release candidate
