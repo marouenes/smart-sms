@@ -1,0 +1,75 @@
+@startuml entity-relationship-diagram-chat-conversations-history
+
+title Entity Relationship Diagram (Chat/Conversations history)
+
+skinparam class {
+    BackgroundColor<< (T, white) >> White
+    BackgroundColor<< (T, #efefef) >> #efefef
+}
+
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+table( chats ) {
+    primary_key( id ): INT
+    column( name ): VARCHAR(100)
+    column( customer_id ): INT
+    column( created_at ): DATETIME
+    column( updated_at ): DATETIME
+}
+
+table( messages ) {
+    primary_key( id ): BIGINT
+    column( text ): TEXT
+    column( chat_line_id ): BIGINT
+}
+
+table( chat_lines ) {
+    primary_key( id ): BIGINT
+    column( customer_id ): INT
+    column( internal ): TINYINT
+    column( flagged ): TINYINT
+    column( alert_date ): DATETIME
+    column( chat_id ): INT
+    column( reply_to ): BIGINT
+    column( thread_id ): BIGINT
+    column( created_at ): DATETIME
+    column( updated_at ): DATETIME
+}
+
+table( files ) {
+    primary_key( id ): BIGINT
+    column( file_name ): VARCHAR(255)
+    column( external_path ): VARCHAR(255)
+    column( file_type ): VARCHAR(45)
+    column( file_size ): INT
+    column( chat_line_id ): BIGINT
+}
+
+table( seens ) {
+    primary_key( id ): BIGINT
+    column( customer_id ): INT
+    column( chat_line_id ): BIGINT
+    column( seen_at ): DATETIME
+}
+
+table( file_relevances ) {
+    primary_key( id ): BIGINT
+    column( customer_id ): INT
+    column( created_at ): DATETIME
+    column( updated_at ): DATETIME
+    column( relevant ): TINYINT
+    column( file_id ): INT
+}
+
+
+chat_lines }o--|| chats
+chat_lines ||--|| messages
+chat_lines ||--|| files
+chat_lines ||-|| seens
+files ||--o{ file_relevances
+
+
+@enduml
