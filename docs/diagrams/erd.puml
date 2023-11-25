@@ -1,4 +1,4 @@
-@startuml uml2
+@startuml entity-relationship-diagram-chat-conversations-history
 
 title Entity Relationship Diagram (Chat/Conversations history)
 
