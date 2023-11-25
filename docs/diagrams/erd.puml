@@ -7,6 +7,12 @@ skinparam class {
     BackgroundColor<< (T, #efefef) >> #efefef
 }
 
+' hide the spot
+' hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
 !define primary_key(x) <b><color:#b8861b><&key></color> x</b>
 !define foreign_key(x) <color:#aaaaaa><&key></color> x
 !define column(x) <color:#efefef><&media-record></color> x
@@ -23,7 +29,7 @@ table( chats ) {
 table( messages ) {
     primary_key( id ): BIGINT
     column( text ): TEXT
-    column( chat_line_id ): BIGINT
+    foreign_key( chat_line_id ): BIGINT
 }
 
 table( chat_lines ) {
@@ -32,7 +38,7 @@ table( chat_lines ) {
     column( internal ): TINYINT
     column( flagged ): TINYINT
     column( alert_date ): DATETIME
-    column( chat_id ): INT
+    foreign_key( chat_id ): INT
     column( reply_to ): BIGINT
     column( thread_id ): BIGINT
     column( created_at ): DATETIME
@@ -45,13 +51,13 @@ table( files ) {
     column( external_path ): VARCHAR(255)
     column( file_type ): VARCHAR(45)
     column( file_size ): INT
-    column( chat_line_id ): BIGINT
+    foreign_key( chat_line_id ): BIGINT
 }
 
 table( seens ) {
     primary_key( id ): BIGINT
     column( customer_id ): INT
-    column( chat_line_id ): BIGINT
+    foreign_key( chat_line_id ): BIGINT
     column( seen_at ): DATETIME
 }
 
@@ -61,15 +67,23 @@ table( file_relevances ) {
     column( created_at ): DATETIME
     column( updated_at ): DATETIME
     column( relevant ): TINYINT
-    column( file_id ): INT
+    foreign_key( file_id ): INT
 }
 
+note top of customer_id : reply belongs to 0 or one chat line
+note top of customer_id : chat line can have 0 or more replies
+customer_id |o--o{ flagged
+
+note top of reply_to : chat line belongs to 0 or one thread
+note top of reply_to : thread can have 0 or more chat lines
+reply_to |o--o{ thread_id
 
 chat_lines }o--|| chats
+note top of chats : chat can have 0 or more chat lines
+note bottom of chats : chat line belongs to only one chat
 chat_lines ||--|| messages
 chat_lines ||--|| files
-chat_lines ||-|| seens
-files ||--o{ file_relevances
-
+chat_lines ||-|{ seens
+files ||--|{ file_relevances
 
 @enduml
