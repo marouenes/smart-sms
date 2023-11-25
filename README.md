@@ -1,4 +1,4 @@
-# collabify.io © TakeOff
+# SmartSMS © TakeOff
 
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg?style=flat-square)](https://github.com/marouenes/creator-io/blob/main/LICENSE)
 [![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square)](https://github.com/marouenes/creator-io/blob/main/CONTRIBUTING.md)
