@@ -14,7 +14,6 @@ permissions:
 jobs:
   release-drafter:
     name: Release Drafter
-    # Do not run this job on changes to `setup.cfg`
     if: ( github.event_name != 'push' || !startsWith(github.event.inputs.ref, 'refs/tags/') )
     permissions:
       # write permission is required to create a github release
@@ -43,7 +42,6 @@ jobs:
       # Drafts your next Release notes as Pull Requests are merged into "main"
       - uses: release-drafter/release-drafter@v5.22.0
         with:
-          # Only publish the releases and tags on push to v1
           publish: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
