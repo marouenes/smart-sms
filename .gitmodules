@@ -1,0 +1,6 @@
+[submodule "smart_sms_api"]
+	path = smart_sms_api
+	url = https://github.com/BenAyedMehdi/SmartSmsAPI
+[submodule "smart_sms_frontend"]
+	path = smart_sms_frontend
+	url = https://github.com/BenAyedMehdi/DhiwiseSmartSms
