@@ -1,0 +1,49 @@
+name: Release Automation and Publishing
+
+on:
+  push:
+    branches:
+      - main
+  # pull_request event is required only for autolabeler
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  release-drafter:
+    name: Release Drafter
+    # Do not run this job on changes to `setup.cfg`
+    if: ( github.event_name != 'push' || !startsWith(github.event.inputs.ref, 'refs/tags/') )
+    permissions:
+      # write permission is required to create a github release
+      contents: write
+      # Write permission is required for autolabeler
+      # otherwise, read permission is required at least
+      pull-requests: write
+    # trunk-ignore(actionlint/runner-label)
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: release-drafter/release-drafter@v5.22.0
+        with:
+          publish: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-release:
+    name: Publish Release
+    if: ( github.event_name == 'push' && github.ref == 'refs/heads/main' )
+    permissions:
+      contents: write
+      pull-requests: write
+    # trunk-ignore(actionlint/runner-label)
+    runs-on: [self-hosted, xsmall]
+    steps:
+      # Drafts your next Release notes as Pull Requests are merged into "main"
+      - uses: release-drafter/release-drafter@v5.22.0
+        with:
+          # Only publish the releases and tags on push to v1
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
